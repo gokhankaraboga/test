@@ -1,13 +1,10 @@
 from django.contrib import admin
 from .models import Profile
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.forms import UserCreationForm
+from .forms import CustomUserCreationForm
 
 
-class CustomUserCreationForm(UserCreationForm):
-    class Meta(UserCreationForm.Meta):
-        model = Profile
-        fields = '__all__'
+
 
 
 class UserAdmin(BaseUserAdmin):

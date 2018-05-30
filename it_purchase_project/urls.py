@@ -1,21 +1,43 @@
-"""it_purchase_project URL Configuration
+from django.conf.urls import include, url
+from django.contrib.auth import views as auth
+from material.frontend.registry import modules
+from material import frontend
+from material.frontend.apps import ModuleMixin
+from django.views import generic
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/2.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
-from django.contrib import admin
-from django.urls import path
+class Purchase(ModuleMixin):
+    """
+    Home page module
+    """
+    order = 1
+    label = 'Introduction'
+    icon = '<i class="material-icons">account_balance</i>'
+
+    @property
+    def urls(self):
+        index_view = generic.TemplateView.as_view(template_name='it_purchase_app/index.html')
+
+        return frontend.ModuleURLResolver(
+            '^', [url('^$', index_view, name="index")],
+            module=self, app_name='it_purchase_app', namespace='it_purchase_app')
+
+    def index_url(self):
+        return '/'
+
+    def installed(self):
+        return True
+
+
+modules.register(Purchase())
+
+
+from material.frontend import urls as frontend_urls  # NOQA
+
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    url(r'^login/$', auth.login, name='login'),
+    url(r'^logout/$', auth.logout, name='logout'),
+    url(r'', include(frontend_urls)),
+
+
 ]

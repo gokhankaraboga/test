@@ -37,6 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'viewflow',
+    'viewflow.frontend',
+    'material',
+    'material.frontend',
+    'material.admin',
+    'it_purchase_project.it_purchase_app',
+    'django_extensions',
+    'it_purchase_project.profile',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +62,10 @@ ROOT_URLCONF = 'it_purchase_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'it_purchase_project/templates'),
+
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -118,3 +129,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+AUTH_USER_MODEL = 'profile.Profile'
+

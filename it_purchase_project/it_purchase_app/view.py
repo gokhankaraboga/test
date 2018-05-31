@@ -1,7 +1,6 @@
 from django.views import generic
-from material import Layout, Fieldset, Row, Span2, Span5, Span7
-
-from viewflow.flow.views import StartFlowMixin, FlowMixin
+from material import Layout, Row
+from viewflow.flow.views import StartFlowMixin
 
 from .forms import PurchaseForm
 
@@ -13,9 +12,11 @@ class StartView(StartFlowMixin, generic.UpdateView):
     )
 
     def get_object(self):
-        return self.activation.process.leave
+        return self.activation.process.purchase
 
     def activation_done(self, form):
-        leave = form.save()
-        self.activation.process.leave = leave
+        purchase = form.save()
+        purchase.user = self.request.user
+        purchase.save()
+        self.activation.process.purchase = purchase
         super(StartView, self).activation_done(form)

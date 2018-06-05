@@ -1,0 +1,36 @@
+{% extends 'viewflow/flow/task.html' %}
+
+{% load viewflow material_form material_frontend %}
+
+
+        {% block extrahead %}
+            {% load static %}
+             <link rel="stylesheet" href="{% static "custom.css" %}">
+        {% endblock %}
+
+
+{% block left-panel %}
+    <div class="left-panel">
+        <div class="card">
+            <form role="form" method="POST">
+                <div class="card-content">
+                    <div class="card-title black-text">{{ activation.flow_task.task_title|default:activation.task.flow_task }}</div>
+                    <div class="information"> <br><span >Created By: {{ created_by }}</span> </div>
+                    <div class="information"> <br><span >Description: {{ purchase_request }}</span> </div>
+
+                 {% block task_form %}
+                {% csrf_token %}
+                {% form form=form %}{% endform %}
+                {{ activation.management_form }}
+                {% endblock %}
+                </div>
+                <div class="card-action row">
+                    <div class="col s12 right-align">
+
+                        <button type="submit" class="btn primary white-text btn-flat">Start</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

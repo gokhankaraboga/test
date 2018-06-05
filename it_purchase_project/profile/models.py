@@ -2,7 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 
-JOB_TITLES = (('developer', 'Developer'), ('manager', 'Manager'))
+JOB_TITLES = (('developer', 'Developer'), ('manager', 'Manager'), ('support', 'Support'))
+
 
 class Profile(AbstractUser):
     job_title = models.CharField(choices=JOB_TITLES, blank=True,
@@ -17,5 +18,7 @@ class Profile(AbstractUser):
         permissions = [
             ('can_approve_purchase', 'Can approve it_purchase_app form'),
             ('can_create_purchase', 'Can create it_purchase_app form'),
+            ('can_support_purchase', 'Can support it_purchase_app form'),
+            ('can_purchase_team', 'Can get price quote it_purchase_app form'),
 
         ]

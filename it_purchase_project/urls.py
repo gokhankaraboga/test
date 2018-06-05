@@ -15,11 +15,13 @@ class Purchase(ModuleMixin):
 
     @property
     def urls(self):
-        index_view = generic.TemplateView.as_view(template_name='it_purchase_app/index.html')
+        index_view = generic.TemplateView.as_view(
+template_name='it_purchase_app/index.html')
 
         return frontend.ModuleURLResolver(
             '^', [url('^$', index_view, name="index")],
-            module=self, app_name='it_purchase_app', namespace='it_purchase_app')
+            module=self, app_name='it_purchase_app',
+namespace='it_purchase_app')
 
     def index_url(self):
         return '/'
@@ -38,6 +40,6 @@ urlpatterns = [
     url(r'^login/$', auth.login, name='login'),
     url(r'^logout/$', auth.logout, name='logout'),
     url(r'', include(frontend_urls)),
-
+    #url(r'^', include('it_purchase_project.profile.urls')),
 
 ]

@@ -24,7 +24,10 @@ SECRET_KEY = 'o6ibg2*^4ornutxpd$#lm!r62c=-$8jlxfd^6v3=asp1)q**2q'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
 ALLOWED_HOSTS = []
 
 
@@ -63,7 +66,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'it_purchase_project/templates'),
+            os.path.join(BASE_DIR, 'templates'),
 
         ],
         'APP_DIRS': True,
@@ -128,7 +131,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'profile.Profile'
 
+LOGIN_REDIRECT_URL = '/workflow'
+
+LOGOUT_REDIRECT_URL = 'login'

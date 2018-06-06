@@ -48,27 +48,35 @@ class PurchaseFlow(Flow):
             task_title=_('Check Necessity of Price Quote'),
         )
             .Then(this.get_price_quote)
-            .Else(this.manager_check)
+            .Else(this.manager_approval)
     )
 
     get_price_quote = (
         flow.View(
-            view.PurchaseView, fields=['purchase_team_comment'],
+            view.GetPriceQuote,
             task_title=_('Get a Price Quote '),
             task_description=_("Get a Price Quote"),
         )
             .Permission('profile.can_purchase_team')
-            .Next(this.manager_check)
+            .Next(this.is_manager_approval_required)
     )
 
-    manager_check = (
+    is_manager_approval_required = (
+        flow.If(cond=lambda
+            activation: activation.process.is_manager_approval_required)
+            .Then(this.manager_approval)
+            .Else(this.end)
+    )
+
+    manager_approval = (
         flow.View(
-            view.PurchaseView, fields=['manager_approved', 'manager_comment'],
+            view.ManagerCheck,
             task_title=_('Manager Approve For Purchase'),
             task_description=_("Approvement is required"),
             task_result_summary=_(
-                "Purchase was {{ process.approved|yesno:'Approved,Rejected' "
-                "}}"))
+                "Purchase was {{ "
+                "process.purchase.manager_approval|yesno:'Approved,Rejected'  "
+                "}} by {{process.created_by}}"))
             .Permission('profile.can_approve_purchase')
             .Next(this.end)
     )

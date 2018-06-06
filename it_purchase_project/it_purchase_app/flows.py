@@ -26,7 +26,7 @@ class PurchaseFlow(Flow):
 
     support = (
         flow.View(
-            view.support_view,
+            view.SupportView,
         )
             .Permission('profile.can_support_purchase')
             .Next(this.price_quote)
@@ -34,7 +34,7 @@ class PurchaseFlow(Flow):
 
     price_quote = (
         flow.View(
-            view.is_need_price_quote,
+            view.DoesNeedPriceQuote,
             task_title=_('Purchase Team Approval For Price Quote'),
             task_description=_("Does Need Get a Price Quote"),
         )

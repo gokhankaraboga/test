@@ -4,6 +4,8 @@ from material.frontend.registry import modules
 from material import frontend
 from material.frontend.apps import ModuleMixin
 from django.views import generic
+from django.views.generic import RedirectView
+
 
 class Purchase(ModuleMixin):
     """
@@ -39,7 +41,9 @@ from material.frontend import urls as frontend_urls  # NOQA
 urlpatterns = [
     url(r'^login/$', auth.login, name='login'),
     url(r'^logout/$', auth.logout, name='logout'),
+    url(r'^$', generic.RedirectView.as_view(url='/workflow/', permanent=False)),
     url(r'', include(frontend_urls)),
+
     #url(r'^', include('it_purchase_project.profile.urls')),
 
 ]

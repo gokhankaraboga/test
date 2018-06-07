@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ValidationError
 from material.forms import ModelForm
 
-from .models import Purchase
+from .models import Purchase, BOOLEAN_CHOICES
 
 
 class PurchaseForm(ModelForm):
@@ -26,7 +26,7 @@ class SupportForm(ModelForm):
 
 
 class NecessaryPriceQuoteForm(ModelForm):
-    need_price_quote = forms.NullBooleanField(required=True)
+    need_price_quote = forms.ChoiceField(choices=BOOLEAN_CHOICES, required=True)
 
     purchase_team_comment = forms.CharField(max_length=150,
                                             label="Purchase team comment")
@@ -36,9 +36,12 @@ class NecessaryPriceQuoteForm(ModelForm):
     support_comment = forms.CharField(
         widget=forms.Textarea(attrs={'readonly': True}))
 
+    price_quoted = forms.FloatField(required=False)
+
     class Meta(SupportForm.Meta):
         fields = SupportForm.Meta.fields + [
-            'support_user', 'need_price_quote', 'purchase_team_comment']
+            'support_user', 'need_price_quote', 'purchase_team_comment',
+            'price_quoted']
 
     def clean(self):
         # Must be "== None" check instead; otherwise, condition would accept
@@ -53,6 +56,8 @@ class GetPriceQuoteForm(NecessaryPriceQuoteForm):
         widget=forms.Textarea(attrs={'readonly': True}))
     purchase_team_comment = forms.CharField(
         widget=forms.Textarea(attrs={'readonly': True}))
+    price_quoted = forms.FloatField(required=True)
+    investigator_comment = forms.CharField(required=False)
 
     class Meta(NecessaryPriceQuoteForm.Meta):
         fields = NecessaryPriceQuoteForm.Meta.fields + ['price_quoted',
@@ -60,16 +65,18 @@ class GetPriceQuoteForm(NecessaryPriceQuoteForm):
 
 
 class ManagerApprovalForm(GetPriceQuoteForm):
+    # TODO investigator_comment should be hidden input depending on conditions
     investigator_comment = forms.CharField(
-        widget=forms.Textarea(attrs={'readonly': True}))
+        widget=forms.Textarea(attrs={'readonly': True}), required=False)
     price_quoted = forms.FloatField(widget=forms.Textarea(
         attrs={'readonly': True}))
+    manager_approval = forms.ChoiceField(choices=BOOLEAN_CHOICES, required=True)
 
     class Meta(GetPriceQuoteForm.Meta):
         fields = GetPriceQuoteForm.Meta.fields + [
             'manager_comment', 'manager_approval']
 
     def clean(self):
-        if self.cleaned_data['manager_approval'] == None:
+        if self.cleaned_data['manager_approval'] == 'Not Decided':
             raise ValidationError(
                 {'manager_approval': ["This field is required", ]})

@@ -77,7 +77,8 @@ class PurchaseFlow(Flow):
                 "Purchase was {{ "
                 "process.purchase.manager_approval|yesno:'Approved,Rejected'  "
                 "}} by {{process.created_by}}"))
-            .Permission('profile.can_approve_purchase')
+            .Permission('profile.can_approve_purchase').
+            Assign(lambda act: act.process.assign)
             .Next(this.end)
     )
 

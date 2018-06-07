@@ -1,13 +1,9 @@
 from django.views import generic
 from material import Layout, Row
 from viewflow.flow.views import StartFlowMixin, FlowMixin
-from viewflow.decorators import flow_view
+
 from .forms import PurchaseForm, SupportForm, NecessaryPriceQuoteForm, \
     GetPriceQuoteForm, ManagerApprovalForm
-from django.shortcuts import render, redirect
-from viewflow.flow.views.utils import get_next_task_url
-import datetime
-from . import forms
 
 
 class CustomLayout(Layout):
@@ -66,6 +62,8 @@ class DoesNeedPriceQuote(FlowMixin, generic.UpdateView):
         Row('support_user'),
         Row('need_price_quote'),
         Row('purchase_team_comment'),
+        Row('price_quoted'),
+
     )
 
     def get_object(self):

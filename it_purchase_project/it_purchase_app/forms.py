@@ -13,6 +13,12 @@ class PurchaseForm(ModelForm):
 
 
 class SupportForm(ModelForm):
+    # def __init__(self, *args, **kwargs):
+    #     self.created_by = kwargs.pop("created_by")
+    #     kwargs["initial"]["created_by"] =  self.created_by
+    #
+    #     # self.initial["created_by"] = self.created_by.username
+    #     super(SupportForm, self).__init__(*args, **kwargs)
     support_comment = forms.CharField(max_length=150,
                                       label="please support comment")
     description = forms.CharField(
@@ -22,7 +28,7 @@ class SupportForm(ModelForm):
 
     class Meta:
         model = Purchase
-        fields = ['support_comment', 'description', 'created_by']
+        fields = ['support_comment', 'description', ]
 
 
 class NecessaryPriceQuoteForm(ModelForm):
@@ -31,6 +37,8 @@ class NecessaryPriceQuoteForm(ModelForm):
     purchase_team_comment = forms.CharField(max_length=150,
                                             label="Purchase team comment")
 
+    created_by = forms.CharField(
+        widget=forms.Textarea(attrs={'readonly': True}))
     support_user = forms.CharField(
         widget=forms.Textarea(attrs={'readonly': True}))
     support_comment = forms.CharField(
@@ -40,7 +48,7 @@ class NecessaryPriceQuoteForm(ModelForm):
 
     class Meta(SupportForm.Meta):
         fields = SupportForm.Meta.fields + [
-            'support_user', 'need_price_quote', 'purchase_team_comment',
+            'need_price_quote', 'purchase_team_comment',
             'price_quoted']
 
     def clean(self):
@@ -58,6 +66,8 @@ class GetPriceQuoteForm(NecessaryPriceQuoteForm):
         widget=forms.Textarea(attrs={'readonly': True}))
     price_quoted = forms.FloatField(required=True)
     investigator_comment = forms.CharField(required=False)
+    purchase_team_user = forms.CharField(
+        widget=forms.Textarea(attrs={'readonly': True}))
 
     class Meta(NecessaryPriceQuoteForm.Meta):
         fields = NecessaryPriceQuoteForm.Meta.fields + ['price_quoted',
@@ -71,6 +81,9 @@ class ManagerApprovalForm(GetPriceQuoteForm):
     price_quoted = forms.FloatField(widget=forms.Textarea(
         attrs={'readonly': True}))
     manager_approval = forms.ChoiceField(choices=BOOLEAN_CHOICES, required=True)
+
+    purchase_investigator_user =  forms.CharField(
+        widget=forms.Textarea(attrs={'readonly': True}))
 
     class Meta(GetPriceQuoteForm.Meta):
         fields = GetPriceQuoteForm.Meta.fields + [

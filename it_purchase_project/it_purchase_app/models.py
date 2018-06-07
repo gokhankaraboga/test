@@ -23,15 +23,27 @@ class Purchase(models.Model):
     manager_comment = models.CharField(max_length=500, default="")
     manager_approval = models.CharField(choices=BOOLEAN_CHOICES,
                                         blank=True, null=True, max_length=500)
-    created_by = models.CharField(max_length=500, default="")
-
-    support_user = models.CharField(max_length=500, default="")
-    purchase_user = models.CharField(max_length=500, default="")
-    purchase_team_investigator = models.CharField(max_length=500, default="")
+    # created_by = models.CharField(max_length=500, default="")
+    #
+    # support_user = models.CharField(max_length=500, default="")
+    # purchase_user = models.CharField(max_length=500, default="")
+    # purchase_investigator_user = models.CharField(max_length=500, default="")
     investigator_comment = models.CharField(max_length=500, default="")
     price_quoted = models.FloatField(blank=True, null=True)
 
+class PurchaseTask(Task):
+    class Meta:
+        proxy = True
+    def get_previous_process_created_by(self, previous_step):
+        obj = PurchaseTask.objects.get(pk=self.pk - previous_step).owner
 
+        if not obj:
+            print("adsad")
+        return  obj
+    @staticmethod
+    def get_task_map(activation):
+        all_tasks =list(activation.process.task_set.all())
+        return all_tasks
 class PurchaseProcess(Process):
     purchase = models.ForeignKey("Purchase", blank=True, null=True,
                                  on_delete=models.CASCADE)
@@ -40,7 +52,7 @@ class PurchaseProcess(Process):
     def is_manager_approval_required(self):
         # TODO DJANGO ORM QUERY OPTIMIZATION
         groups = Profile.objects.get(
-            username=self.purchase.created_by).groups.all()
+            username=self.get_created_by).groups.all()
         max_limit = 0
 
         for group in groups:
@@ -57,7 +69,7 @@ class PurchaseProcess(Process):
     @property
     def assign(self):
         groups = Profile.objects.get(
-            username=self.purchase.created_by).groups.all()
+            username=self.get_created_by).groups.all()
 
         max_rank = TITLES_WEIGHT[DEVELOPER_TITLE] + 1
         for group in groups:
@@ -77,13 +89,18 @@ class PurchaseProcess(Process):
 
         return Profile.objects.filter(groups__name=superior_title).first()
 
+    # def get_previous_process_created_by(self, previous_step):
+    #     return PurchaseTask.objects.get(pk=self.pk - previous_step)
+
+
+
     class Meta:
         verbose_name_plural = 'Purchase process list'
 
 
-class PurchaseTask(Task):
-    class Meta:
-        proxy = True
+# class PurchaseTask(Task):
+#     class Meta:
+#         proxy = True
 
 #
 # class Support(models.Model):

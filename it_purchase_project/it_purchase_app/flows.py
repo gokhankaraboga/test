@@ -48,7 +48,7 @@ class PurchaseFlow(Flow):
             task_title=_('Check Necessity of Price Quote'),
         )
             .Then(this.get_price_quote)
-            .Else(this.superior_approval)
+            .Else(this.is_superior_approval_required)
     )
 
     get_price_quote = (

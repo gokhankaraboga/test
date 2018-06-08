@@ -11,12 +11,13 @@ from .forms import PurchaseForm, SupportForm, NecessaryPriceQuoteForm, \
 class CustomLayout(Layout):
     def __add__(self, x):
         elements = x.elements + self.elements
-        return Layout(elements)
+        return CustomLayout(*elements)
+
 
 
 class StartView(StartFlowMixin, generic.UpdateView):
     form_class = PurchaseForm
-    layout = Layout(
+    layout = CustomLayout(
         Row('description'),
     )
 
@@ -38,11 +39,10 @@ class PurchaseView(FlowMixin, generic.UpdateView):
 
 class SupportView(FlowMixin, generic.UpdateView):
     form_class = SupportForm
-    layout = Layout(
-        Row('support_comment'),
-        Row('description'),
+    layout = CustomLayout(
         Row('created_by'),
-    )
+        Row('support_comment'),
+    ) + StartView.layout
 
     def get_form_kwargs(self):
         kwargs = super(SupportView, self).get_form_kwargs()
@@ -67,15 +67,12 @@ class SupportView(FlowMixin, generic.UpdateView):
 class DoesNeedPriceQuote(FlowMixin, generic.UpdateView):
     form_class = NecessaryPriceQuoteForm
     layout = CustomLayout(
-        Row('description'),
-        Row('created_by'),
-        Row('support_comment'),
         Row('support_user'),
         Row('need_price_quote'),
         Row('purchase_team_comment'),
         Row('price_quoted'),
 
-    )
+    ) + SupportView.layout
 
     def get_form_kwargs(self):
         kwargs = super(DoesNeedPriceQuote, self).get_form_kwargs()
@@ -99,18 +96,16 @@ class DoesNeedPriceQuote(FlowMixin, generic.UpdateView):
 
 
 class GetPriceQuote(FlowMixin, generic.UpdateView):
-    layout = Layout(
-        Row('description'),
-        Row('created_by'),
-        Row('support_comment'),
+    layout = CustomLayout(
         Row('support_user'),
         Row('need_price_quote'),
-        Row('purchase_team_user'),
         Row('purchase_team_comment'),
+        Row('purchase_team_user'),
+        Row('need_price_quote'),
         Row('investigator_comment'),
         Row('price_quoted'),
 
-    )
+    ) + SupportView.layout
     form_class = GetPriceQuoteForm
 
     def get_object(self):
@@ -133,20 +128,11 @@ class GetPriceQuote(FlowMixin, generic.UpdateView):
 
 class SuperiorApprovalCheck(FlowMixin, generic.UpdateView):
     form_class = SuperiorApprovalForm
-    layout = Layout(
-        Row('description'),
-        Row('created_by'),
-        Row('support_comment'),
-        Row('support_user'),
-        Row('purchase_team_user'),
-        Row('purchase_team_comment'),
-        Row('need_price_quote'),
+    layout = CustomLayout(
         Row('purchase_investigator_user'),
-        Row('investigator_comment'),
-        Row('price_quoted'),
         Row('superior_comment'),
         Row('superior_approval'),
-    )
+    ) + GetPriceQuote.layout
 
     def get_object(self):
         return self.activation.process.purchase
@@ -174,24 +160,13 @@ class SuperiorApprovalCheck(FlowMixin, generic.UpdateView):
 class ProceedPurchase(FlowMixin, generic.UpdateView):
     form_class = ProceedPurchaseForm
 
-    layout = Layout(
-        Row('description'),
-        Row('created_by'),
-        Row('support_comment'),
-        Row('support_user'),
-        Row('purchase_team_user'),
-        Row('purchase_team_comment'),
-        Row('need_price_quote'),
-        Row('purchase_investigator_user'),
-        Row('investigator_comment'),
-        Row('price_quoted'),
-        Row('superior_comment'),
-        Row('superior_approval'),
+    layout =CustomLayout(
+
         Row('superior_user'),
         Row('purchase_confirmation_comment'),
 
 
-    )
+    ) + SuperiorApprovalCheck.layout
 
     def get_form_kwargs(self):
         kwargs = super(ProceedPurchase, self).get_form_kwargs()

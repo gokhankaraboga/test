@@ -20,14 +20,9 @@ class Purchase(models.Model):
                                         blank=False, null=False, max_length=500)
     purchase_team_comment = models.CharField(max_length=500, default="",
                                              null=True)
-    manager_comment = models.CharField(max_length=500, default="")
-    manager_approval = models.CharField(choices=BOOLEAN_CHOICES,
+    superior_comment = models.CharField(max_length=500, default="")
+    superior_approval = models.CharField(choices=BOOLEAN_CHOICES,
                                         blank=True, null=True, max_length=500)
-    # created_by = models.CharField(max_length=500, default="")
-    #
-    # support_user = models.CharField(max_length=500, default="")
-    # purchase_user = models.CharField(max_length=500, default="")
-    # purchase_investigator_user = models.CharField(max_length=500, default="")
     investigator_comment = models.CharField(max_length=500, default="")
     price_quoted = models.FloatField(blank=True, null=True)
 
@@ -40,19 +35,16 @@ class PurchaseTask(Task):
         if not obj:
             print("adsad")
         return  obj
-    @staticmethod
-    def get_task_map(activation):
-        all_tasks =list(activation.process.task_set.all())
-        return all_tasks
+
 class PurchaseProcess(Process):
     purchase = models.ForeignKey("Purchase", blank=True, null=True,
                                  on_delete=models.CASCADE)
 
     @property
-    def is_manager_approval_required(self):
+    def is_superior_approval_required(self):
         # TODO DJANGO ORM QUERY OPTIMIZATION
         groups = Profile.objects.get(
-            username=self.get_created_by).groups.all()
+            username=self.get_task_map()["start"].owner.username).groups.all()
         max_limit = 0
 
         for group in groups:
@@ -66,10 +58,9 @@ class PurchaseProcess(Process):
 
         return False
 
-    @property
-    def assign(self):
+    def superior_assign(self):
         groups = Profile.objects.get(
-            username=self.get_created_by).groups.all()
+            username=self.get_task_map()["start"].owner.username).groups.all()
 
         max_rank = TITLES_WEIGHT[DEVELOPER_TITLE] + 1
         for group in groups:
@@ -92,7 +83,12 @@ class PurchaseProcess(Process):
     # def get_previous_process_created_by(self, previous_step):
     #     return PurchaseTask.objects.get(pk=self.pk - previous_step)
 
+    def get_task_map(self):
+        task_dict = {}
+        for task in list(self.task_set.all()):
+            task_dict[task.flow_task.name] = task
 
+        return task_dict
 
     class Meta:
         verbose_name_plural = 'Purchase process list'

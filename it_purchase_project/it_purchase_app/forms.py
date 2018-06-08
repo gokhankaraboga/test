@@ -74,22 +74,31 @@ class GetPriceQuoteForm(NecessaryPriceQuoteForm):
                                                         'investigator_comment']
 
 
-class ManagerApprovalForm(GetPriceQuoteForm):
+class SuperiorApprovalForm(GetPriceQuoteForm):
     # TODO investigator_comment should be hidden input depending on conditions
     investigator_comment = forms.CharField(
         widget=forms.Textarea(attrs={'readonly': True}), required=False)
     price_quoted = forms.FloatField(widget=forms.Textarea(
         attrs={'readonly': True}))
-    manager_approval = forms.ChoiceField(choices=BOOLEAN_CHOICES, required=True)
+    superior_approval = forms.ChoiceField(choices=BOOLEAN_CHOICES, required=True)
 
-    purchase_investigator_user =  forms.CharField(
-        widget=forms.Textarea(attrs={'readonly': True}))
+    purchase_investigator_user = forms.CharField(
+        widget=forms.Textarea(attrs={'readonly': True}), required=False)
 
     class Meta(GetPriceQuoteForm.Meta):
         fields = GetPriceQuoteForm.Meta.fields + [
-            'manager_comment', 'manager_approval']
+            'superior_comment', 'superior_approval']
 
     def clean(self):
-        if self.cleaned_data['manager_approval'] == 'Not Decided':
+        if self.cleaned_data['superior_approval'] == 'Not Decided':
             raise ValidationError(
-                {'manager_approval': ["This field is required", ]})
+                {'superior_approval': ["This field is required", ]})
+
+
+class ProceedPurchaseForm(SuperiorApprovalForm):
+    superior_user = forms.CharField(
+        widget=forms.Textarea(attrs={'readonly': True}))
+    superior_approval = forms.CharField(
+        widget=forms.Textarea(attrs={'readonly': True}))
+    purchase_confirmation_comment = forms.CharField(max_length=150,
+                                            label="Purchase Confirmation comment")

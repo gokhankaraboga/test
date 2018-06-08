@@ -44,11 +44,11 @@ class PurchaseFlow(Flow):
 
     check_price_quote = (
         flow.If(
-            cond=lambda act: act.process.purchase.need_price_quote,
+            cond=lambda act: act.process.purchase.need_price_quote == "Yes",
             task_title=_('Check Necessity of Price Quote'),
         )
             .Then(this.get_price_quote)
-            .Else(this.manager_approval)
+            .Else(this.superior_approval)
     )
 
     get_price_quote = (
@@ -58,28 +58,46 @@ class PurchaseFlow(Flow):
             task_description=_("Get a Price Quote"),
         )
             .Permission('profile.can_purchase_team')
-            .Next(this.is_manager_approval_required)
+            .Next(this.is_superior_approval_required)
     )
 
-    is_manager_approval_required = (
+    is_superior_approval_required = (
         flow.If(cond=lambda
-            activation: activation.process.is_manager_approval_required)
-            .Then(this.manager_approval)
+            activation: activation.process.is_superior_approval_required)
+            .Then(this.superior_approval)
             .Else(this.end)
     )
 
-    manager_approval = (
+    superior_approval = (
         flow.View(
-            view.ManagerCheck,
+            view.SuperiorApprovalCheck,
             task_title=_('Manager Approve For Purchase'),
             task_description=_("Approvement is required"),
             task_result_summary=_(
                 "Purchase was {{ "
-                "process.purchase.manager_approval|yesno:'Approved,Rejected'  "
+                "process.purchase.superior_approval|yesno:'Approved,Rejected'  "
                 "}} by {{process.created_by}}"))
             .Permission('profile.can_approve_purchase').
-            Assign(lambda act: act.process.assign)
-            .Next(this.end)
+            Assign(lambda act: act.process.superior_assign())
+            .Next(this.check_superior_approval)
+    )
+
+    check_superior_approval = (
+        flow.If(
+            cond=lambda act: act.process.purchase.superior_approval == "Yes",
+            task_title=_('Check Approval of Manager'),
+        )
+            .Then(this.proceed_purchase)
+            .Else(this.end)
+    )
+
+
+    proceed_purchase = (flow.View(
+        view.ProceedPurchase,
+        task_title=_('Proceed Purchase'),
+        task_description=_('Proceed Purchase'),
+    ).Permission('profile.can_purchase_team').Next(
+        this.end)
     )
 
     end = flow.End()

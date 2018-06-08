@@ -5,7 +5,7 @@ from viewflow.nodes.view import Start
 from .models import PurchaseProcess, PurchaseTask
 
 from .forms import PurchaseForm, SupportForm, NecessaryPriceQuoteForm, \
-    GetPriceQuoteForm, ManagerApprovalForm
+    GetPriceQuoteForm, SuperiorApprovalForm, ProceedPurchaseForm
 
 
 class CustomLayout(Layout):
@@ -46,13 +46,12 @@ class SupportView(FlowMixin, generic.UpdateView):
 
     def get_form_kwargs(self):
         kwargs = super(SupportView, self).get_form_kwargs()
-        PurchaseTask.get_task_map(self.activation)
+        task_dict = self.activation.process.get_task_map()
 
-        # kwargs['initial'].update(
-        #     {
-        #         "created_by":
-        #             self.activation.task.get_previous_process_created_by(
-        #                 previous_step=1).username})
+        kwargs['initial'].update(
+            {
+                "created_by":
+                    task_dict['start'].owner.username})
         return kwargs
 
     def get_object(self):
@@ -80,16 +79,13 @@ class DoesNeedPriceQuote(FlowMixin, generic.UpdateView):
 
     def get_form_kwargs(self):
         kwargs = super(DoesNeedPriceQuote, self).get_form_kwargs()
-        PurchaseProcess.objects.get(pk=self.activation.process.pk - 1)
-        self.activation.process.get_previous_by_created()
+        task_dict = self.activation.process.get_task_map()
         kwargs['initial'].update(
             {
                 "created_by":
-                    self.activation.task.get_previous_process_created_by(
-                        previous_step=2).username,
+                    task_dict['start'].owner.username,
                 "support_user":
-                    self.activation.task.get_previous_process_created_by(
-                        previous_step=1).username})
+                    task_dict['support'].owner.username})
         return kwargs
 
     def get_object(self):
@@ -98,7 +94,6 @@ class DoesNeedPriceQuote(FlowMixin, generic.UpdateView):
     def activation_done(self, form):
         purchase = form.save(commit=False)
         self.activation.process.purchase = purchase
-        # purchase.purchase_user = self.request.user.username
         purchase.save()
         super(DoesNeedPriceQuote, self).activation_done(form)
 
@@ -110,10 +105,10 @@ class GetPriceQuote(FlowMixin, generic.UpdateView):
         Row('support_comment'),
         Row('support_user'),
         Row('need_price_quote'),
+        Row('purchase_team_user'),
         Row('purchase_team_comment'),
         Row('investigator_comment'),
         Row('price_quoted'),
-        Row('purchase_user'),
 
     )
     form_class = GetPriceQuoteForm
@@ -123,68 +118,100 @@ class GetPriceQuote(FlowMixin, generic.UpdateView):
 
     def get_form_kwargs(self):
         kwargs = super(GetPriceQuote, self).get_form_kwargs()
-        PurchaseProcess.objects.get(pk=self.activation.process.pk - 1)
-        self.activation.process.get_previous_by_created()
+        task_dict = self.activation.process.get_task_map()
 
         kwargs['initial'].update(
             {
                 "created_by":
-                    self.activation.task.get_previous_process_created_by(
-                        previous_step=3).username,
+                    task_dict['start'].owner.username,
                 "support_user":
-                    self.activation.task.get_previous_process_created_by(
-                        previous_step=2).username,
-                'purchase_user':
-                    self.activation.task.get_previous_process_created_by(
-                    previous_step=1).username,
-
+                    task_dict['support'].owner.username,
+                "purchase_team_user": task_dict["price_quote"].owner.username
             })
         return kwargs
 
 
-class ManagerCheck(FlowMixin, generic.UpdateView):
-    form_class = ManagerApprovalForm
+class SuperiorApprovalCheck(FlowMixin, generic.UpdateView):
+    form_class = SuperiorApprovalForm
     layout = Layout(
         Row('description'),
         Row('created_by'),
         Row('support_comment'),
         Row('support_user'),
-        Row('purchase_user'),
-
-        Row('purchase_investigator_user'),
-
-        Row('need_price_quote'),
+        Row('purchase_team_user'),
         Row('purchase_team_comment'),
+        Row('need_price_quote'),
+        Row('purchase_investigator_user'),
         Row('investigator_comment'),
         Row('price_quoted'),
-        Row('manager_comment'),
-        Row('manager_approval'),
-
+        Row('superior_comment'),
+        Row('superior_approval'),
     )
 
     def get_object(self):
         return self.activation.process.purchase
 
     def get_form_kwargs(self):
-        kwargs = super(ManagerCheck, self).get_form_kwargs()
-        PurchaseProcess.objects.get(pk=self.activation.process.pk - 1)
-        self.activation.process.get_previous_by_created()
+        kwargs = super(SuperiorApprovalCheck, self).get_form_kwargs()
+        task_dict = self.activation.process.get_task_map()
+
         kwargs['initial'].update(
             {
                 "created_by":
-                    self.activation.task.get_previous_process_created_by(
-                        previous_step=4).username,
+                    task_dict['start'].owner.username,
                 "support_user":
-                    self.activation.task.get_previous_process_created_by(
-                        previous_step=3).username,
-                'purchase_user':
-                    self.activation.task.get_previous_process_created_by(
-                        previous_step=2).username,
-                'purchase_investigator_user':
-                    self.activation.task.get_previous_process_created_by(
-                        previous_step=1).username,
-
+                    task_dict['support'].owner.username,
+                "purchase_team_user": task_dict["price_quote"].owner.username,
             })
+        if self.activation.process.purchase.need_price_quote == 'Yes':
+            kwargs["initial"].update(
+                {"purcase_investigator_user": task_dict[
+                    "get_price_quote"].owner.username})
+
         return kwargs
 
 
+class ProceedPurchase(FlowMixin, generic.UpdateView):
+    form_class = ProceedPurchaseForm
+
+    layout = Layout(
+        Row('description'),
+        Row('created_by'),
+        Row('support_comment'),
+        Row('support_user'),
+        Row('purchase_team_user'),
+        Row('purchase_team_comment'),
+        Row('need_price_quote'),
+        Row('purchase_investigator_user'),
+        Row('investigator_comment'),
+        Row('price_quoted'),
+        Row('superior_comment'),
+        Row('superior_approval'),
+        Row('superior_user'),
+        Row('purchase_confirmation_comment'),
+
+
+    )
+
+    def get_form_kwargs(self):
+        kwargs = super(ProceedPurchase, self).get_form_kwargs()
+        task_dict = self.activation.process.get_task_map()
+
+        kwargs['initial'].update(
+            {
+                "created_by":
+                    task_dict['start'].owner.username,
+                "support_user":
+                    task_dict['support'].owner.username,
+                "purchase_team_user": task_dict["price_quote"].owner.username,
+                "superior_user": task_dict["superior_approval"].owner.username,
+            })
+        if self.activation.process.purchase.need_price_quote == 'Yes':
+            kwargs["initial"].update(
+                {"purcase_investigator_user": task_dict[
+                    "get_price_quote"].owner.username})
+
+        return kwargs
+
+    def get_object(self):
+        return self.activation.process.purchase

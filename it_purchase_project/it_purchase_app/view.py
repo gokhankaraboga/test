@@ -151,7 +151,7 @@ class SuperiorApprovalCheck(FlowMixin, generic.UpdateView):
             })
         if self.activation.process.purchase.need_price_quote == 'Yes':
             kwargs["initial"].update(
-                {"purcase_investigator_user": task_dict[
+                {"purchase_investigator_user": task_dict[
                     "get_price_quote"].owner.username})
 
         return kwargs

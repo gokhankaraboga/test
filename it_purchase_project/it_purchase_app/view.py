@@ -1,6 +1,7 @@
 from django.views import generic
 from material import Layout, Row
 from viewflow.flow.views import StartFlowMixin, FlowMixin
+from django import forms
 from viewflow.nodes.view import Start
 from .models import PurchaseProcess, PurchaseTask
 
@@ -12,7 +13,6 @@ class CustomLayout(Layout):
     def __add__(self, x):
         elements = x.elements + self.elements
         return CustomLayout(*elements)
-
 
 
 class StartView(StartFlowMixin, generic.UpdateView):
@@ -141,6 +141,19 @@ class SuperiorApprovalCheck(FlowMixin, generic.UpdateView):
         kwargs = super(SuperiorApprovalCheck, self).get_form_kwargs()
         task_dict = self.activation.process.get_task_map()
 
+        my_field = kwargs["instance"].investigator_comment
+
+        if my_field == "":
+            self.form_class.base_fields[
+                "investigator_comment"].widget = forms.HiddenInput()
+            self.form_class.base_fields[
+                "investigator_comment"].label = ""
+
+            self.form_class.base_fields[
+                "purchase_investigator_user"].widget = forms.HiddenInput()
+            self.form_class.base_fields[
+                "purchase_investigator_user"].label = ""
+
         kwargs['initial'].update(
             {
                 "created_by":
@@ -160,11 +173,10 @@ class SuperiorApprovalCheck(FlowMixin, generic.UpdateView):
 class ProceedPurchase(FlowMixin, generic.UpdateView):
     form_class = ProceedPurchaseForm
 
-    layout =CustomLayout(
+    layout = CustomLayout(
 
         Row('superior_user'),
         Row('purchase_confirmation_comment'),
-
 
     ) + SuperiorApprovalCheck.layout
 
@@ -183,7 +195,7 @@ class ProceedPurchase(FlowMixin, generic.UpdateView):
             })
         if self.activation.process.purchase.need_price_quote == 'Yes':
             kwargs["initial"].update(
-                {"purcase_investigator_user": task_dict[
+                {"purchase_investigator_user": task_dict[
                     "get_price_quote"].owner.username})
 
         return kwargs

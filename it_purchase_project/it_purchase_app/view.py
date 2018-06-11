@@ -141,18 +141,9 @@ class SuperiorApprovalCheck(FlowMixin, generic.UpdateView):
         kwargs = super(SuperiorApprovalCheck, self).get_form_kwargs()
         task_dict = self.activation.process.get_task_map()
 
-        my_field = kwargs["instance"].investigator_comment
-
-        if my_field == "":
-            self.form_class.base_fields[
-                "investigator_comment"].widget = forms.HiddenInput()
-            self.form_class.base_fields[
-                "investigator_comment"].label = ""
-
-            self.form_class.base_fields[
-                "purchase_investigator_user"].widget = forms.HiddenInput()
-            self.form_class.base_fields[
-                "purchase_investigator_user"].label = ""
+        if kwargs["instance"].investigator_comment == "":
+            self.layout = disable_purchase_comment_and_user(
+                self.layout.elements)
 
         kwargs['initial'].update(
             {
@@ -174,15 +165,17 @@ class ProceedPurchase(FlowMixin, generic.UpdateView):
     form_class = ProceedPurchaseForm
 
     layout = CustomLayout(
-
         Row('superior_user'),
         Row('purchase_confirmation_comment'),
-
     ) + SuperiorApprovalCheck.layout
 
     def get_form_kwargs(self):
         kwargs = super(ProceedPurchase, self).get_form_kwargs()
         task_dict = self.activation.process.get_task_map()
+
+        if kwargs["instance"].investigator_comment == "":
+            self.layout = disable_purchase_comment_and_user(
+                self.layout.elements)
 
         kwargs['initial'].update(
             {
@@ -202,3 +195,12 @@ class ProceedPurchase(FlowMixin, generic.UpdateView):
 
     def get_object(self):
         return self.activation.process.purchase
+
+
+def disable_purchase_comment_and_user(elements):
+    temp_layout_elements = []
+    for elm in elements:
+        if elm.elements[0].field_name not in \
+                ["investigator_comment", "purchase_investigator_user"]:
+            temp_layout_elements.append(elm)
+    return CustomLayout(*temp_layout_elements)

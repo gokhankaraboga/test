@@ -1,8 +1,7 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from viewflow.models import Process, Task
-from django.contrib.auth.models import AbstractUser
 
-from django.utils.translation import ugettext_lazy as _
 from .constants import *
 from ..profile.models import Profile
 
@@ -22,19 +21,22 @@ class Purchase(models.Model):
                                              null=True)
     superior_comment = models.CharField(max_length=500, default="")
     superior_approval = models.CharField(choices=BOOLEAN_CHOICES,
-                                        blank=True, null=True, max_length=500)
+                                         blank=True, null=True, max_length=500)
     investigator_comment = models.CharField(max_length=500, default="")
     price_quoted = models.FloatField(blank=True, null=True)
+
 
 class PurchaseTask(Task):
     class Meta:
         proxy = True
+
     def get_previous_process_created_by(self, previous_step):
         obj = PurchaseTask.objects.get(pk=self.pk - previous_step).owner
 
         if not obj:
             print("adsad")
-        return  obj
+        return obj
+
 
 class PurchaseProcess(Process):
     purchase = models.ForeignKey("Purchase", blank=True, null=True,
@@ -92,7 +94,6 @@ class PurchaseProcess(Process):
 
     class Meta:
         verbose_name_plural = 'Purchase process list'
-
 
 # class PurchaseTask(Task):
 #     class Meta:

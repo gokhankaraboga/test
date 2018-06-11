@@ -13,12 +13,6 @@ class PurchaseForm(ModelForm):
 
 
 class SupportForm(ModelForm):
-    # def __init__(self, *args, **kwargs):
-    #     self.created_by = kwargs.pop("created_by")
-    #     kwargs["initial"]["created_by"] =  self.created_by
-    #
-    #     # self.initial["created_by"] = self.created_by.username
-    #     super(SupportForm, self).__init__(*args, **kwargs)
     support_comment = forms.CharField(max_length=150,
                                       label="please support comment")
     description = forms.CharField(
@@ -80,8 +74,8 @@ class SuperiorApprovalForm(GetPriceQuoteForm):
         widget=forms.Textarea(attrs={'readonly': True}), required=False)
     price_quoted = forms.FloatField(widget=forms.Textarea(
         attrs={'readonly': True}))
-    superior_approval = forms.ChoiceField(choices=BOOLEAN_CHOICES, required=True)
-
+    superior_approval = forms.ChoiceField(choices=BOOLEAN_CHOICES,
+                                          required=True)
     purchase_investigator_user = forms.CharField(
         widget=forms.Textarea(attrs={'readonly': True}), required=False)
 
@@ -101,4 +95,6 @@ class ProceedPurchaseForm(SuperiorApprovalForm):
     superior_approval = forms.CharField(
         widget=forms.Textarea(attrs={'readonly': True}))
     purchase_confirmation_comment = forms.CharField(max_length=150,
-                                            label="Purchase Confirmation comment")
+                                                    label="Purchase "
+                                                          "Confirmation "
+                                                          "comment")

@@ -60,8 +60,7 @@ class NecessaryPriceQuoteForm(ModelForm):
 
 
 class GetPriceQuoteForm(NecessaryPriceQuoteForm):
-us
-need_price_quote = forms.CharField(
+    need_price_quote = forms.CharField(
         widget=forms.Textarea(attrs={'readonly': True}))
     purchase_team_comment = forms.CharField(
         widget=forms.Textarea(attrs={'readonly': True}))

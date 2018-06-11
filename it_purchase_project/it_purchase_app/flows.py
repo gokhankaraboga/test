@@ -5,6 +5,8 @@ from viewflow.lock import select_for_update_lock
 from .models import PurchaseProcess, PurchaseTask
 from . import view
 from django.utils.translation import gettext as _
+from django.utils.decorators import method_decorator
+from viewflow.flow.views import CancelProcessView
 
 
 @frontend.register
@@ -29,8 +31,21 @@ class PurchaseFlow(Flow):
             view.SupportView,
         )
             .Permission('profile.can_support_purchase')
-            .Next(this.price_quote)
+            .Next(this.check_support_approve)
     )
+    check_support_approve = (
+        flow.If(
+            cond=lambda act: act.process.purchase.support_approval == "Yes",
+            task_title=_('Check Approval of Support'),
+        )
+            .Then(this.price_quote)
+            .Else(this.cancel_process)
+    )
+
+    cancel_process = (
+            flow.Handler(this.my_handler)
+                .Next(this.end)
+        )
 
     price_quote = (
         flow.View(
@@ -91,7 +106,6 @@ class PurchaseFlow(Flow):
             .Else(this.end)
     )
 
-
     proceed_purchase = (flow.View(
         view.ProceedPurchase,
         task_title=_('Proceed Purchase'),
@@ -101,3 +115,22 @@ class PurchaseFlow(Flow):
     )
 
     end = flow.End()
+
+    # @method_decorator(
+    #     flow.flow_func)
+    # def perform_my_task(self, activation, **kwargs):
+    #     activation.prepare()
+    #     activation.cancel()
+    #     activation.process.status
+    #     activation.done()
+    #     activation.gokhan
+    #     a = adad
+
+
+
+    # def my_handler(self, activation):
+    #     pass
+    #
+
+
+

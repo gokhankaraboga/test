@@ -6,7 +6,7 @@ from .constants import *
 from ..profile.models import Profile
 
 BOOLEAN_CHOICES = (
-    ('Not Decided', 'Not Decided'),
+    ('None', 'Not Decided'),
     ('Yes', 'Yes'),
     ('No', 'No')
 )
@@ -24,6 +24,8 @@ class Purchase(models.Model):
                                          blank=True, null=True, max_length=500)
     investigator_comment = models.CharField(max_length=500, default="")
     price_quoted = models.FloatField(blank=True, null=True)
+    support_approval = models.CharField(choices=BOOLEAN_CHOICES,
+                                        blank=True, null=True, max_length=500)
 
 
 class PurchaseTask(Task):
@@ -55,6 +57,10 @@ class PurchaseProcess(Process):
             if PERSONAL_LIMITS[group.name] > max_limit:
                 max_limit = PERSONAL_LIMITS.get(group.name, 0)
 
+        if not self.purchase.price_quoted:
+            raise Exception(
+                "Price quote must be specified in previous steps"
+            )
         if self.purchase.price_quoted > max_limit:
             return True
 

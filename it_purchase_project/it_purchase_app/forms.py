@@ -20,9 +20,12 @@ class SupportForm(ModelForm):
     created_by = forms.CharField(
         widget=forms.Textarea(attrs={'readonly': True}))
 
+    support_approval = forms.ChoiceField(choices=BOOLEAN_CHOICES, required=True)
+
+
     class Meta:
         model = Purchase
-        fields = ['support_comment', 'description', ]
+        fields = ['support_comment', 'description','support_approval' ]
 
 
 class NecessaryPriceQuoteForm(ModelForm):
@@ -37,6 +40,9 @@ class NecessaryPriceQuoteForm(ModelForm):
         widget=forms.Textarea(attrs={'readonly': True}))
     support_comment = forms.CharField(
         widget=forms.Textarea(attrs={'readonly': True}))
+    support_approval =  forms.CharField(
+        widget=forms.Textarea(attrs={'readonly': True}))
+
 
     price_quoted = forms.FloatField(required=False)
 
@@ -48,7 +54,7 @@ class NecessaryPriceQuoteForm(ModelForm):
     def clean(self):
         # Must be "== None" check instead; otherwise, condition would accept
         # for False boolean
-        if self.cleaned_data['need_price_quote'] == None:
+        if self.cleaned_data['need_price_quote'] == "None":
             raise ValidationError(
                 {'need_price_quote': ["This field is required", ]})
 
@@ -84,7 +90,7 @@ class SuperiorApprovalForm(GetPriceQuoteForm):
             'superior_comment', 'superior_approval']
 
     def clean(self):
-        if self.cleaned_data['superior_approval'] == 'Not Decided':
+        if self.cleaned_data['superior_approval'] == 'None':
             raise ValidationError(
                 {'superior_approval': ["This field is required", ]})
 

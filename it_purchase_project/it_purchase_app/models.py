@@ -5,10 +5,13 @@ from viewflow.models import Process, Task
 from .constants import *
 from ..profile.models import Profile
 
+NOT_DECIDED = "Not Decided"
+YES = "Yes"
+NO = "No"
 BOOLEAN_CHOICES = (
-    ('None', 'Not Decided'),
-    ('Yes', 'Yes'),
-    ('No', 'No')
+    (NOT_DECIDED, 'Not Decided'),
+    (YES, 'Yes'),
+    (NO, 'No')
 )
 
 
@@ -26,6 +29,8 @@ class Purchase(models.Model):
     price_quoted = models.FloatField(blank=True, null=True)
     support_approval = models.CharField(choices=BOOLEAN_CHOICES,
                                         blank=True, null=True, max_length=500)
+    currency_quoted = models.CharField(max_length=500, default="",
+                                       null=True)
 
 
 class PurchaseTask(Task):

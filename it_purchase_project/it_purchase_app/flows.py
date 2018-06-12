@@ -2,7 +2,7 @@ from viewflow import flow, frontend
 from viewflow.base import Flow, this
 from viewflow.lock import select_for_update_lock
 
-from .models import PurchaseProcess, PurchaseTask
+from .models import PurchaseProcess, PurchaseTask, YES
 from . import view
 from django.utils.translation import gettext as _
 from django.utils.decorators import method_decorator
@@ -35,17 +35,12 @@ class PurchaseFlow(Flow):
     )
     check_support_approve = (
         flow.If(
-            cond=lambda act: act.process.purchase.support_approval == "Yes",
+            cond=lambda act: act.process.purchase.support_approval == YES,
             task_title=_('Check Approval of Support'),
         )
             .Then(this.price_quote)
-            .Else(this.cancel_process)
+            .Else(this.end)
     )
-
-    cancel_process = (
-            flow.Handler(this.my_handler)
-                .Next(this.end)
-        )
 
     price_quote = (
         flow.View(
@@ -59,7 +54,7 @@ class PurchaseFlow(Flow):
 
     check_price_quote = (
         flow.If(
-            cond=lambda act: act.process.purchase.need_price_quote == "Yes",
+            cond=lambda act: act.process.purchase.need_price_quote == YES,
             task_title=_('Check Necessity of Price Quote'),
         )
             .Then(this.get_price_quote)
@@ -99,7 +94,7 @@ class PurchaseFlow(Flow):
 
     check_superior_approval = (
         flow.If(
-            cond=lambda act: act.process.purchase.superior_approval == "Yes",
+            cond=lambda act: act.process.purchase.superior_approval == YES,
             task_title=_('Check Approval of Manager'),
         )
             .Then(this.proceed_purchase)
@@ -127,10 +122,10 @@ class PurchaseFlow(Flow):
     #     a = adad
 
 
-
-    # def my_handler(self, activation):
-    #     pass
     #
+    # def my_handler(self, activation):
+    #     CancelProcessView.as_view()
+
 
 
 

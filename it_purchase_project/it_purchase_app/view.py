@@ -49,7 +49,7 @@ class SupportView(FlowMixin, generic.UpdateView):
         Fieldset("Support",
                  Row('support_comment'),
                  Row('support_approval'),
-                 ) )
+                 ))
 
     def get_form_kwargs(self):
         kwargs = super(SupportView, self).get_form_kwargs()
@@ -75,9 +75,10 @@ class DoesNeedPriceQuote(FlowMixin, generic.UpdateView):
     form_class = NecessaryPriceQuoteForm
     layout = CustomLayout(
         Row('support_user'),
-        Row('need_price_quote'),
-        Row('purchase_team_comment'),
-        Row('price_quoted'),
+        Fieldset("Purchase Team",
+                 Row('need_price_quote'),
+                 Row('purchase_team_comment'),
+                 Row('price_quoted','currency_quoted'), ),
 
     ) + SupportView.layout
 
@@ -105,12 +106,13 @@ class DoesNeedPriceQuote(FlowMixin, generic.UpdateView):
 class GetPriceQuote(FlowMixin, generic.UpdateView):
     layout = CustomLayout(
         Row('support_user'),
+        Fieldset("Purchase Team",
         Row('need_price_quote'),
         Row('purchase_team_comment'),
         Row('purchase_team_user'),
         Row('need_price_quote'),
         Row('investigator_comment'),
-        Row('price_quoted'),
+        Row('price_quoted','currency_quoted'),)
 
     ) + SupportView.layout
     form_class = GetPriceQuoteForm
@@ -137,8 +139,9 @@ class SuperiorApprovalCheck(FlowMixin, generic.UpdateView):
     form_class = SuperiorApprovalForm
     layout = CustomLayout(
         Row('purchase_investigator_user'),
+        Fieldset("Superior Comment",
         Row('superior_comment'),
-        Row('superior_approval'),
+        Row('superior_approval'),)
     ) + GetPriceQuote.layout
 
     def get_object(self):
@@ -173,7 +176,8 @@ class ProceedPurchase(FlowMixin, generic.UpdateView):
 
     layout = CustomLayout(
         Row('superior_user'),
-        Row('purchase_confirmation_comment'),
+        Fieldset("Proceed Purchase",
+                 Row('purchase_confirmation_comment'),),
     ) + SuperiorApprovalCheck.layout
 
     def get_form_kwargs(self):

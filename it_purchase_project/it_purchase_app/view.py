@@ -21,6 +21,8 @@ class StartView(StartFlowMixin, generic.UpdateView):
     layout = CustomLayout(
         Fieldset("Purchase Request",
                  'description'),
+        'items',
+
     )
 
     def get_object(self):
@@ -43,9 +45,9 @@ class SupportView(FlowMixin, generic.UpdateView):
     form_class = SupportForm
     layout = CustomLayout(
         Fieldset("Purchase Details",
-        Row('created_by'),
-        Row('description'),
-    ),
+                 Row('created_by'),
+                 Row('description'),
+                 ),
         Fieldset("Support",
                  Row('support_comment'),
                  Row('support_approval'),
@@ -78,7 +80,7 @@ class DoesNeedPriceQuote(FlowMixin, generic.UpdateView):
         Fieldset("Purchase Team",
                  Row('need_price_quote'),
                  Row('purchase_team_comment'),
-                 Row('price_quoted','currency_quoted'), ),
+                 Row('price_quoted', 'currency_quoted'), ),
 
     ) + SupportView.layout
 
@@ -107,12 +109,12 @@ class GetPriceQuote(FlowMixin, generic.UpdateView):
     layout = CustomLayout(
         Row('support_user'),
         Fieldset("Purchase Team",
-        Row('need_price_quote'),
-        Row('purchase_team_comment'),
-        Row('purchase_team_user'),
-        Row('need_price_quote'),
-        Row('investigator_comment'),
-        Row('price_quoted','currency_quoted'),)
+                 Row('need_price_quote'),
+                 Row('purchase_team_comment'),
+                 Row('purchase_team_user'),
+                 Row('need_price_quote'),
+                 Row('investigator_comment'),
+                 Row('price_quoted', 'currency_quoted'), )
 
     ) + SupportView.layout
     form_class = GetPriceQuoteForm
@@ -140,8 +142,8 @@ class SuperiorApprovalCheck(FlowMixin, generic.UpdateView):
     layout = CustomLayout(
         Row('purchase_investigator_user'),
         Fieldset("Superior Comment",
-        Row('superior_comment'),
-        Row('superior_approval'),)
+                 Row('superior_comment'),
+                 Row('superior_approval'), )
     ) + GetPriceQuote.layout
 
     def get_object(self):
@@ -177,7 +179,7 @@ class ProceedPurchase(FlowMixin, generic.UpdateView):
     layout = CustomLayout(
         Row('superior_user'),
         Fieldset("Proceed Purchase",
-                 Row('purchase_confirmation_comment'),),
+                 Row('purchase_confirmation_comment'), ),
     ) + SuperiorApprovalCheck.layout
 
     def get_form_kwargs(self):

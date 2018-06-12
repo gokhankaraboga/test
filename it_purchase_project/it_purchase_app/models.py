@@ -33,16 +33,16 @@ class Purchase(models.Model):
                                        null=True)
 
 
+class PurchaseItem(models.Model):
+    purchase = models.ForeignKey(Purchase, on_delete=models.CASCADE,
+                                 related_name="item", )
+    name = models.CharField(max_length=250)
+    quantity = models.IntegerField(default=1)
+
+
 class PurchaseTask(Task):
     class Meta:
         proxy = True
-
-    def get_previous_process_created_by(self, previous_step):
-        obj = PurchaseTask.objects.get(pk=self.pk - previous_step).owner
-
-        if not obj:
-            print("adsad")
-        return obj
 
 
 class PurchaseProcess(Process):

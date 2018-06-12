@@ -1,15 +1,32 @@
 from django import forms
 from django.forms import ValidationError
-from material.forms import ModelForm
-
-from .models import Purchase, BOOLEAN_CHOICES, NOT_DECIDED
+from material.forms import ModelForm, InlineFormSetField
+from django.forms import inlineformset_factory
+from .models import Purchase, PurchaseItem, BOOLEAN_CHOICES, NOT_DECIDED
 
 
 class PurchaseForm(ModelForm):
+    items = InlineFormSetField(Purchase, PurchaseItem,
+                               fields=['name', 'quantity'], extra=1)
+
     class Meta:
         model = Purchase
         fields = [
             'description', ]
+
+    def clean(self):
+        if self.formsets["items"].is_valid():
+            for i in range(len(self.formsets["items"].cleaned_data)):
+                if i not in self.formsets['items']._deleted_form_indexes:
+
+                    item = self.formsets["items"].cleaned_data[i]
+
+                    if not (item.get("name") and item.get('quantity')):
+                        raise ValidationError(
+                            "You have to specify one item at least")
+                    return
+            raise ValidationError(
+                "You have to specify one item at least")
 
 
 class SupportForm(ModelForm):
@@ -22,10 +39,9 @@ class SupportForm(ModelForm):
 
     support_approval = forms.ChoiceField(choices=BOOLEAN_CHOICES, required=True)
 
-
     class Meta:
         model = Purchase
-        fields = ['support_comment', 'description','support_approval']
+        fields = ['support_comment', 'description', 'support_approval']
 
     def clean(self):
         # Must be "== None" check instead; otherwise, condition would accept
@@ -33,6 +49,7 @@ class SupportForm(ModelForm):
         if self.cleaned_data['support_approval'] == NOT_DECIDED:
             raise ValidationError(
                 {'support_approval': ["This field is required", ]})
+
 
 class NecessaryPriceQuoteForm(ModelForm):
     need_price_quote = forms.ChoiceField(choices=BOOLEAN_CHOICES, required=True)
@@ -50,7 +67,7 @@ class NecessaryPriceQuoteForm(ModelForm):
         widget=forms.Textarea(attrs={'readonly': True}))
 
     currency_quoted = forms.CharField(max_length=150,
-                                      label="Currency",required=False)
+                                      label="Currency", required=False)
     price_quoted = forms.FloatField(required=False)
 
     class Meta(SupportForm.Meta):
@@ -68,7 +85,8 @@ class NecessaryPriceQuoteForm(ModelForm):
 
         if bool(currency) != bool(price):
             raise ValidationError(
-                "Either you can fill both 'Currency' and 'Price Quoted' fields or omit both of them.")
+                "Either you can fill both 'Currency' and 'Price Quoted' "
+                "fields or omit both of them.")
 
 
 class GetPriceQuoteForm(NecessaryPriceQuoteForm):

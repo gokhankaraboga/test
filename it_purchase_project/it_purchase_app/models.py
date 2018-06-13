@@ -93,9 +93,6 @@ class PurchaseProcess(Process):
 
         return Profile.objects.filter(groups__name=superior_title).first()
 
-    # def get_previous_process_created_by(self, previous_step):
-    #     return PurchaseTask.objects.get(pk=self.pk - previous_step)
-
     def get_task_map(self):
         task_dict = {}
         for task in list(self.task_set.all()):
@@ -106,10 +103,7 @@ class PurchaseProcess(Process):
     class Meta:
         verbose_name_plural = 'Purchase process list'
 
-# class PurchaseTask(Task):
-#     class Meta:
-#         proxy = True
 
-#
-# class Support(models.Model):
-#     comment = models.CharField(max_length=500, default="")
+class PurchaseTask(Task):
+    class Meta:
+        proxy = True

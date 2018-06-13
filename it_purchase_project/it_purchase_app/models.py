@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from viewflow.models import Process, Task
+from django.utils.translation import gettext_lazy as _
 
 from .constants import *
 from ..profile.models import Profile
@@ -32,6 +33,9 @@ class Purchase(models.Model):
     currency_quoted = models.CharField(max_length=500, default="",
                                        null=True)
 
+    class Meta:
+        verbose_name = _('purchase')
+        verbose_name_plural = _('purchases')
 
 class PurchaseItem(models.Model):
     purchase = models.ForeignKey(Purchase, on_delete=models.CASCADE,
@@ -102,8 +106,3 @@ class PurchaseProcess(Process):
 
     class Meta:
         verbose_name_plural = 'Purchase process list'
-
-
-class PurchaseTask(Task):
-    class Meta:
-        proxy = True

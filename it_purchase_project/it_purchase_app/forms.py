@@ -3,6 +3,7 @@ from django.forms import ValidationError
 from material.forms import ModelForm, InlineFormSetField
 from django.forms import inlineformset_factory
 from .models import Purchase, PurchaseItem, BOOLEAN_CHOICES, NOT_DECIDED
+from django.utils.translation import gettext_lazy as _
 
 
 class PurchaseForm(ModelForm):
@@ -15,6 +16,7 @@ class PurchaseForm(ModelForm):
             'description', ]
 
     def clean(self):
+        error_message = _("You have to specify one item at least")
         if self.formsets["items"].is_valid():
             for i in range(len(self.formsets["items"].cleaned_data)):
                 if i not in self.formsets['items']._deleted_form_indexes:
@@ -23,10 +25,10 @@ class PurchaseForm(ModelForm):
 
                     if not (item.get("name") and item.get('quantity')):
                         raise ValidationError(
-                            "You have to specify one item at least")
+                            error_message)
                     return
             raise ValidationError(
-                "You have to specify one item at least")
+                error_message)
 
 
 class PurchaseItemForm(ModelForm):
@@ -42,7 +44,7 @@ class PurchaseItemForm(ModelForm):
 
 class SupportForm(ModelForm):
     support_comment = forms.CharField(max_length=150,
-                                      label="please support comment")
+                                      label=_("please support comment"))
     description = forms.CharField(
         widget=forms.Textarea(attrs={'readonly': True}))
 
@@ -72,7 +74,7 @@ class NecessaryPriceQuoteForm(ModelForm):
     need_price_quote = forms.ChoiceField(choices=BOOLEAN_CHOICES, required=True)
 
     purchase_team_comment = forms.CharField(max_length=150,
-                                            label="Purchase team comment")
+                                            label=_("Purchase team comment"))
 
     created_by = forms.CharField(
         widget=forms.Textarea(attrs={'readonly': True}))
@@ -107,8 +109,8 @@ class NecessaryPriceQuoteForm(ModelForm):
 
         if bool(currency) != bool(price):
             raise ValidationError(
-                "Either you can fill both 'Currency' and 'Price Quoted' "
-                "fields or omit both of them.")
+                _("Either you can fill both 'Currency' and 'Price Quoted' "
+                "fields or omit both of them."))
 
 
 class GetPriceQuoteForm(NecessaryPriceQuoteForm):

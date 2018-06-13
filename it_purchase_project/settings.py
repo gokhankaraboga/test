@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+from django.utils.translation import gettext_lazy as _
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -142,7 +144,6 @@ LOGIN_REDIRECT_URL = '/workflow'
 
 LOGOUT_REDIRECT_URL = 'login'
 
-from django.utils.translation import gettext_lazy as _
 
 LANGUAGES = [
     ('tr', _('Turkish')),
@@ -150,5 +151,6 @@ LANGUAGES = [
 ]
 
 LOCALE_PATHS = (
-    os.path.join(BASE_DIR, 'locale'),
+    os.path.join(BASE_DIR, 'it_purchase_project/it_purchase_app/locale'),
+
 )

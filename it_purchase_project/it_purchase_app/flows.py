@@ -4,7 +4,7 @@ from viewflow.lock import select_for_update_lock
 
 from .models import PurchaseProcess, PurchaseTask, YES
 from . import view
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 
 @frontend.register
@@ -13,10 +13,9 @@ class PurchaseFlow(Flow):
     process_class = PurchaseProcess
     task_class = PurchaseTask
     lock_impl = select_for_update_lock
+    process_title = _("Purchase1")
 
-    summary_template = """
-        Purchase Form For Gozen Hold.
-        """
+    summary_template = _("Purchase Form For Gozen Hold")
 
     start = (
         flow.Start(view.StartView)

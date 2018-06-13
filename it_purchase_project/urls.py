@@ -5,6 +5,7 @@ from material import frontend
 from material.frontend.apps import ModuleMixin
 from django.views import generic
 from django.views.generic import RedirectView
+from django.conf.urls.i18n import i18n_patterns
 
 
 class Purchase(ModuleMixin):

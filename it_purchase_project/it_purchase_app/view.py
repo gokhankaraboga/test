@@ -22,7 +22,6 @@ class StartView(StartFlowMixin, generic.UpdateView):
         Fieldset("Purchase Request",
                  'description'),
         'items',
-
     )
 
     def get_object(self):
@@ -47,6 +46,7 @@ class SupportView(FlowMixin, generic.UpdateView):
         Fieldset("Purchase Details",
                  Row('created_by'),
                  Row('description'),
+                 Row('items'),
                  ),
         Fieldset("Support",
                  Row('support_comment'),
@@ -154,8 +154,17 @@ class SuperiorApprovalCheck(FlowMixin, generic.UpdateView):
         task_dict = self.activation.process.get_task_map()
 
         if kwargs["instance"].investigator_comment == "":
-            self.layout = disable_purchase_comment_and_user(
-                self.layout.elements)
+            self.form_class.base_fields[
+                "investigator_comment"].widget = \
+                forms.HiddenInput()
+            self.form_class.base_fields[
+                "investigator_comment"].label = ""
+
+            self.form_class.base_fields[
+                "purchase_investigator_user"].widget = \
+                forms.HiddenInput()
+            self.form_class.base_fields[
+                "purchase_investigator_user"].label = ""
 
         kwargs['initial'].update(
             {
@@ -187,8 +196,17 @@ class ProceedPurchase(FlowMixin, generic.UpdateView):
         task_dict = self.activation.process.get_task_map()
 
         if kwargs["instance"].investigator_comment == "":
-            self.layout = disable_purchase_comment_and_user(
-                self.layout.elements)
+            self.form_class.base_fields[
+                "investigator_comment"].widget = \
+                forms.HiddenInput()
+            self.form_class.base_fields[
+                "investigator_comment"].label = ""
+
+            self.form_class.base_fields[
+                "purchase_investigator_user"].widget = \
+                forms.HiddenInput()
+            self.form_class.base_fields[
+                "purchase_investigator_user"].label = ""
 
         kwargs['initial'].update(
             {
@@ -208,12 +226,3 @@ class ProceedPurchase(FlowMixin, generic.UpdateView):
 
     def get_object(self):
         return self.activation.process.purchase
-
-
-def disable_purchase_comment_and_user(elements):
-    temp_layout_elements = []
-    for elm in elements:
-        if elm.elements[0].field_name not in \
-                ["investigator_comment", "purchase_investigator_user"]:
-            temp_layout_elements.append(elm)
-    return CustomLayout(*temp_layout_elements)

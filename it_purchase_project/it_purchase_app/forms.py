@@ -29,11 +29,28 @@ class PurchaseForm(ModelForm):
                 "You have to specify one item at least")
 
 
+class PurchaseItemForm(ModelForm):
+    name = forms.CharField(
+        widget=forms.Textarea(attrs={'readonly': True}))
+    quantity = forms.IntegerField(
+        widget=forms.Textarea(attrs={"readonly": True}))
+
+    class Meta:
+        model = PurchaseItem
+        fields = ['name', 'quantity']
+
+
 class SupportForm(ModelForm):
     support_comment = forms.CharField(max_length=150,
                                       label="please support comment")
     description = forms.CharField(
         widget=forms.Textarea(attrs={'readonly': True}))
+
+    items = InlineFormSetField(
+        formset_class=inlineformset_factory(Purchase, PurchaseItem,
+                                            form=PurchaseItemForm,
+                                            can_delete=False,
+                                            extra=0, max_num=1))
     created_by = forms.CharField(
         widget=forms.Textarea(attrs={'readonly': True}))
 
@@ -59,6 +76,11 @@ class NecessaryPriceQuoteForm(ModelForm):
 
     created_by = forms.CharField(
         widget=forms.Textarea(attrs={'readonly': True}))
+    items = InlineFormSetField(
+        formset_class=inlineformset_factory(Purchase, PurchaseItem,
+                                            form=PurchaseItemForm,
+                                            can_delete=False,
+                                            extra=0, max_num=1))
     support_user = forms.CharField(
         widget=forms.Textarea(attrs={'readonly': True}))
     support_comment = forms.CharField(
@@ -90,6 +112,11 @@ class NecessaryPriceQuoteForm(ModelForm):
 
 
 class GetPriceQuoteForm(NecessaryPriceQuoteForm):
+    items = InlineFormSetField(
+        formset_class=inlineformset_factory(Purchase, PurchaseItem,
+                                            form=PurchaseItemForm,
+                                            can_delete=False,
+                                            extra=0, max_num=1))
     need_price_quote = forms.CharField(
         widget=forms.Textarea(attrs={'readonly': True}))
     purchase_team_comment = forms.CharField(
@@ -108,7 +135,11 @@ class GetPriceQuoteForm(NecessaryPriceQuoteForm):
 
 
 class SuperiorApprovalForm(GetPriceQuoteForm):
-    # TODO investigator_comment should be hidden input depending on conditions
+    items = InlineFormSetField(
+        formset_class=inlineformset_factory(Purchase, PurchaseItem,
+                                            form=PurchaseItemForm,
+                                            can_delete=False,
+                                            extra=0, max_num=1))
     investigator_comment = forms.CharField(
         widget=forms.Textarea(attrs={'readonly': True}), required=False)
     price_quoted = forms.FloatField(widget=forms.Textarea(
@@ -131,6 +162,11 @@ class SuperiorApprovalForm(GetPriceQuoteForm):
 
 
 class ProceedPurchaseForm(SuperiorApprovalForm):
+    items = InlineFormSetField(
+        formset_class=inlineformset_factory(Purchase, PurchaseItem,
+                                            form=PurchaseItemForm,
+                                            can_delete=False,
+                                            extra=0, max_num=1))
     superior_user = forms.CharField(
         widget=forms.Textarea(attrs={'readonly': True}))
     superior_approval = forms.CharField(

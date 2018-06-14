@@ -1,0 +1,558 @@
+# distributed under the same license as the Viewflow package.
+msgid ""
+msgstr ""
+"Project-Id-Version: viewflow\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-05-09 09:52+0000\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: viewflow/activation.py:33
+msgctxt "STATUS"
+msgid "Assigned"
+msgstr "Atandi"
+
+#: viewflow/activation.py:34
+msgctxt "STATUS"
+msgid "Canceled"
+msgstr "Iptal Edildi"
+
+#: viewflow/activation.py:35
+msgctxt "STATUS"
+msgid "Done"
+msgstr "Tamam"
+
+#: viewflow/activation.py:36
+msgctxt "STATUS"
+msgid "Error"
+msgstr "Hata"
+
+#: viewflow/activation.py:37
+msgctxt "STATUS"
+msgid "New"
+msgstr "Yeni"
+
+#: viewflow/activation.py:38
+msgctxt "STATUS"
+msgid "Prepared"
+msgstr "Bereit"
+
+#: viewflow/activation.py:39
+msgctxt "STATUS"
+msgid "Scheduled"
+msgstr "Geplant"
+
+#: viewflow/activation.py:40
+msgctxt "STATUS"
+msgid "Started"
+msgstr "Baslatildi"
+
+#: viewflow/activation.py:41
+msgctxt "STATUS"
+msgid "Unripe"
+msgstr ""
+
+#: viewflow/flow/views/actions.py:114
+msgid "Undo"
+msgstr "Geri Al"
+
+#: viewflow/flow/views/actions.py:123
+msgid "Task {task} has been undone."
+msgstr "{task} Asamasi Geri Alindi "
+
+#: viewflow/flow/views/actions.py:130
+#: viewflow/frontend/templates/viewflow/flow/process_cancel.html:17
+#: viewflow/frontend/templates/viewflow/flow/process_detail.html:59
+msgid "Cancel"
+msgstr "Iptal Et"
+
+#: viewflow/flow/views/actions.py:139
+msgid "Task {task} has been canceled."
+msgstr "Aufgabe {task} wurde abgebrochen."
+
+#: viewflow/flow/views/actions.py:146
+msgid "Perform"
+msgstr "Ausführen"
+
+#: viewflow/flow/views/actions.py:162
+msgid "Activate Next"
+msgstr "Nächste Aufgaben aktivieren"
+
+#: viewflow/flow/views/actions.py:252
+msgid "Process {process} can not be canceled."
+msgstr "Prozess {process} konnte nicht abgebrochen werden."
+
+#: viewflow/flow/views/actions.py:257
+msgid "Process {process} has been canceled."
+msgstr "Prozess {process} wurde abgebrochen."
+
+#: viewflow/flow/views/start.py:64
+msgid "Process {process} has been started."
+msgstr "Prozess {process} wurde gestartet."
+
+#: viewflow/flow/views/task.py:59
+msgid "Task {task} cannot be executed."
+msgstr "Aufgabe {task} konnte nicht ausgeführt werden."
+
+#: viewflow/flow/views/task.py:77
+msgid "Task {task} has been completed."
+msgstr "Aufgabe {task} wurde beendet."
+
+#: viewflow/flow/views/task.py:79
+msgid "Process {process} has been completed."
+msgstr "Prozess {process} wurde beendet."
+
+#: viewflow/flow/views/task.py:173
+msgid "Task {task} has been assigned"
+msgstr "Aufgabe {task} wurde zugewiesen."
+
+#: viewflow/flow/views/task.py:187
+msgid "Task {task} cannot be assigned to you"
+msgstr "Aufgabe {task} kann Ihnen nicht zugewiesen werden"
+
+
+#: viewflow/flow/views/task.py:212
+msgid "Task {task} has been unassigned."
+msgstr "Aufgabe {task} wurde rückgängig gemacht."
+
+#: viewflow/frontend/apps.py:18
+msgid "Workflow"
+msgstr "Is Akisi"
+
+#: viewflow/frontend/templates/viewflow/flow/base_task.html:29
+#: viewflow/frontend/templates/viewflow/flow/process_cancel.html:23
+#: viewflow/frontend/templates/viewflow/flow/process_detail.html:19
+#: viewflow/frontend/templates/viewflow/site_task_action.html:16
+msgid "Description"
+msgstr "Aciklama"
+
+#: viewflow/frontend/templates/viewflow/flow/base_task.html:36
+#: viewflow/frontend/templates/viewflow/flow/process_data.html:32
+#: viewflow/frontend/templates/viewflow/flow/process_detail.html:20
+#: viewflow/models.py:156
+msgid "Owner"
+msgstr "Sahibi"
+
+#: viewflow/frontend/templates/viewflow/flow/base_task.html:41
+#: viewflow/models.py:158
+msgid "Permission"
+msgstr "Izin"
+
+#: viewflow/frontend/templates/viewflow/flow/base_task.html:49
+#: viewflow/models.py:18 viewflow/models.py:79
+msgid "Created"
+msgstr "Olusturuldu"
+
+#: viewflow/frontend/templates/viewflow/flow/base_task.html:53
+#: viewflow/frontend/templates/viewflow/flow/process_cancel.html:24
+#: viewflow/frontend/templates/viewflow/flow/process_detail.html:21
+#: viewflow/frontend/templates/viewflow/flow/queue.html:13
+#: viewflow/models.py:80
+msgid "Started"
+msgstr "Baslatildi"
+
+#: viewflow/frontend/templates/viewflow/flow/base_task.html:57
+#: viewflow/frontend/templates/viewflow/flow/process_detail.html:22
+#: viewflow/frontend/templates/viewflow/flow/queue.html:14
+#: viewflow/models.py:19 viewflow/models.py:81
+msgid "Finished"
+msgstr "Bitirildi"
+
+#: viewflow/frontend/templates/viewflow/flow/base_task.html:65
+msgid "Previous tasks"
+msgstr "Vorherige Aufgaben"
+
+#: viewflow/frontend/templates/viewflow/flow/base_task.html:74
+msgid "Next tasks"
+msgstr "Nächste Aufgaben"
+
+#: viewflow/frontend/templates/viewflow/flow/process_cancel.html:21
+#: viewflow/frontend/templates/viewflow/flow/process_detail.html:18
+#: viewflow/frontend/templates/viewflow/flow/queue.html:11
+#: viewflow/frontend/templates/viewflow/site_task_action.html:15
+#: viewflow/frontend/views.py:157 viewflow/frontend/views.py:203
+#: viewflow/frontend/views.py:248
+msgid "#"
+msgstr ""
+
+#: viewflow/frontend/templates/viewflow/flow/process_cancel.html:22
+#: viewflow/frontend/templates/viewflow/flow/queue.html:12
+msgid "Name"
+msgstr ""
+
+#: viewflow/frontend/templates/viewflow/flow/process_cancel.html:25
+#: viewflow/frontend/templates/viewflow/flow/process_detail.html:23
+#: viewflow/frontend/templates/viewflow/flow/queue.html:16
+#: viewflow/models.py:16 viewflow/models.py:77
+msgid "Status"
+msgstr ""
+
+#: viewflow/frontend/templates/viewflow/flow/process_cancel.html:47
+msgid "UNCANCELABLE"
+msgstr "UNZULÄSSIG"
+
+#: viewflow/frontend/templates/viewflow/flow/process_data.html:8
+msgid "edit"
+msgstr "bearbeiten"
+
+#: viewflow/frontend/templates/viewflow/flow/process_data.html:14
+msgid "Yes"
+msgstr "Evet"
+
+#: viewflow/frontend/templates/viewflow/flow/process_data.html:15
+msgid "No"
+msgstr "Hayir"
+
+#: viewflow/frontend/templates/viewflow/flow/process_data.html:27
+msgid "Active tasks"
+msgstr "Aktive Aufgaben"
+
+#: viewflow/frontend/templates/viewflow/flow/process_data.html:31
+#: viewflow/models.py:75 viewflow/models.py:163
+msgid "Task"
+msgstr "Aufgabe"
+
+#: viewflow/frontend/templates/viewflow/flow/queue.html:7
+msgid "Queue"
+msgstr "Warteschlange"
+
+#: viewflow/frontend/templates/viewflow/flow/queue.html:15
+#: viewflow/frontend/templates/viewflow/site_task_action.html:18
+#: viewflow/frontend/views.py:262 viewflow/models.py:145 viewflow/models.py:152
+msgid "Process"
+msgstr "Verarbeiten"
+
+#: viewflow/frontend/templates/viewflow/flow/start.html:23
+msgid "Start and continue on this process"
+msgstr "Beginne und weiter bearbeiten"
+
+#: viewflow/frontend/templates/viewflow/flow/start.html:24
+msgid "Start"
+msgstr "Baslat"
+
+#: viewflow/frontend/templates/viewflow/flow/task.html:32
+#: viewflow/frontend/templates/viewflow/flow/task_action.html:12
+#: viewflow/frontend/templates/viewflow/flow/task_assign.html:14
+#: viewflow/frontend/templates/viewflow/flow/task_detail.html:6
+#: viewflow/frontend/templates/viewflow/flow/task_unassign.html:13
+msgid "Detail"
+msgstr "Detail"
+
+#: viewflow/frontend/templates/viewflow/flow/task.html:35
+msgid "Done and continue on this process"
+msgstr "Erledigt und weiter bearbeiten"
+
+#: viewflow/frontend/templates/viewflow/flow/task.html:36
+msgid "Done"
+msgstr "Erledigt"
+
+#: viewflow/frontend/templates/viewflow/flow/task_action.html:17
+#: viewflow/frontend/templates/viewflow/flow/task_unassign.html:18
+#: viewflow/frontend/templates/viewflow/site_task_action.html:6
+msgid "Confirm"
+msgstr "Bestätigen"
+
+#: viewflow/frontend/templates/viewflow/flow/task_assign.html:5
+#: viewflow/frontend/templates/viewflow/flow/task_assign.html:9
+#: viewflow/frontend/templates/viewflow/flow/task_assign.html:20
+#: viewflow/frontend/templates/viewflow/flow/task_detail.html:18
+msgid "Assign"
+msgstr "Zuordnen"
+
+#: viewflow/frontend/templates/viewflow/flow/task_assign.html:19
+msgid "Assign and continue on this process"
+msgstr "Zuordnen und weitergehen"
+
+#: viewflow/frontend/templates/viewflow/flow/task_detail.html:12
+msgid "Administration"
+msgstr "Verwaltung"
+
+#: viewflow/frontend/templates/viewflow/flow/task_detail.html:23
+#: viewflow/frontend/templates/viewflow/flow/task_unassign.html:5
+#: viewflow/frontend/templates/viewflow/flow/task_unassign.html:8
+msgid "Unassign"
+msgstr "Atanmamis Isler"
+
+#: viewflow/frontend/templates/viewflow/flow/task_detail.html:28
+msgid "Execute"
+msgstr "Ausführen"
+
+#: viewflow/frontend/templates/viewflow/includes/breadcrumb_category.html:2
+#: viewflow/frontend/templates/viewflow/menu.html:3
+#: viewflow/frontend/templates/viewflow/site_tasks.html:6
+msgid "Inbox"
+msgstr "Atananlar"
+
+#: viewflow/frontend/templates/viewflow/includes/breadcrumb_category.html:3
+#: viewflow/frontend/templates/viewflow/menu.html:4
+#: viewflow/frontend/templates/viewflow/site_queue.html:6
+msgid "Unassigned"
+msgstr "Warteschlange"
+
+#: viewflow/frontend/templates/viewflow/includes/breadcrumb_category.html:4
+#: viewflow/frontend/templates/viewflow/menu.html:5
+#: viewflow/frontend/templates/viewflow/site_archive.html:5
+msgid "Participated"
+msgstr "Teilgenommen"
+
+#: frontend/templates/viewflow/includes/flows_start_actions.html:13
+msgid "New process"
+msgstr "Neues Verfahren"
+
+#: viewflow/frontend/templates/viewflow/includes/task_management_menu.html:6
+msgid "No actions available"
+msgstr "Keine Aktionen verfügbar"
+
+#: viewflow/frontend/templates/viewflow/menu.html:9
+msgid "Processes"
+msgstr "Prozesse"
+
+#: viewflow/frontend/templates/viewflow/site_task_action.html:17
+msgid "Summary"
+msgstr "Zusammenfassung"
+
+#: viewflow/frontend/templates/viewflow/site_task_action.html:29
+msgid "No task selected"
+msgstr "Keine Task ausgewählt"
+
+#: viewflow/frontend/views.py:165 viewflow/frontend/views.py:211
+#: viewflow/frontend/views.py:256
+msgid "Task Description"
+msgstr "Aufgabenbeschreibung"
+
+#: viewflow/frontend/views.py:169 viewflow/frontend/views.py:215
+#: viewflow/frontend/views.py:268
+msgid "Process Summary"
+msgstr "Prozesszusammenfassung"
+
+#: viewflow/frontend/views.py:175 viewflow/frontend/views.py:221
+msgid "Process URL"
+msgstr "URL bearbeiten"
+
+#: viewflow/frontend/views.py:316
+msgid "Active Tasks"
+msgstr "Aktive Aufgaben"
+
+#: viewflow/models.py:15
+msgid "Flow"
+msgstr "Arbeitsablauf"
+
+#: viewflow/models.py:76
+msgid "Type"
+msgstr "Art"
+
+#: viewflow/models.py:82
+msgid "Previous"
+msgstr "Bisherige"
+
+#: viewflow/models.py:83
+msgid "Token"
+msgstr "Zeichen"
+
+#: viewflow/models.py:146
+msgid "Process list"
+msgstr "Prozessliste"
+
+#: viewflow/models.py:157
+msgid "External Task ID"
+msgstr "Externe Task-ID"
+
+#: viewflow/models.py:160
+msgid "Comments"
+msgstr "Bemerkungen"
+
+#: viewflow/models.py:164
+msgid "Tasks"
+msgstr "Aufgaben"
+
+#: it_purchase_project/it_purchase_app/flows.py:16
+msgid "Purchase1"
+msgstr "Satin Alma"
+
+#: it_purchase_project/it_purchase_app/flows.py:18
+msgid "Purchase Form For Gozen Hold"
+msgstr "Gozen Sistem Satin Alma Formu"
+
+#: it_purchase_project/it_purchase_app/flows.py:29
+msgid "Support Team"
+msgstr "Destek Takimi"
+
+#: it_purchase_project/it_purchase_app/flows.py:37
+msgid "Check Approval of Support"
+msgstr "Support Kontrol"
+
+#: it_purchase_project/it_purchase_app/flows.py:44
+msgid "Purchase Team Approval For Price Quote"
+msgstr "Satın Alma Takimi"
+
+#: it_purchase_project/it_purchase_app/flows.py:45
+msgid "Does Need Get a Price Quote"
+msgstr "Fıyat Arastirmasi Gerekli Mi"
+
+#: it_purchase_project/it_purchase_app/flows.py:52
+msgid "Check Necessity of Price Quote"
+msgstr "Fıyat Arastirmasi Gerekli Mi"
+
+#: it_purchase_project/it_purchase_app/flows.py:59
+msgid "Get a Price Quote "
+msgstr "Fiyat Arastirmasi Yap"
+
+#: it_purchase_project/it_purchase_app/flows.py:60
+msgid "Get a Price Quote"
+msgstr "Fiyat Arastirmasi Yap"
+
+#: it_purchase_project/it_purchase_app/flows.py:74
+msgid "Manager Approve For Purchase"
+msgstr "Menajer Onayı"
+
+#: it_purchase_project/it_purchase_app/flows.py:75
+msgid "Approvement is required"
+msgstr "Onay gerekli"
+
+#: it_purchase_project/it_purchase_app/flows.py:77
+msgid ""
+"Purchase was {{ process.purchase.superior_approval|yesno:'Approved,"
+"Rejected'  }} by {{process.created_by}}"
+msgstr ""
+"Purchase  {{ process.purchase.superior_approval|yesno:'Onaylandi,"
+"Reddedildi'  }} by {{process.created_by}}"
+
+#: it_purchase_project/it_purchase_app/flows.py:88
+msgid "Check Approval of Manager"
+msgstr "Menajer Onayinin Kontrolu"
+
+#: it_purchase_project/it_purchase_app/flows.py:96
+#: it_purchase_project/it_purchase_app/flows.py:97
+msgid "Proceed Purchase"
+msgstr "Satin Alma Islemini Baslat"
+
+#: it_purchase_project/it_purchase_app/forms.py:19
+msgid "You have to specify one item at least"
+msgstr "En azindan bir parca eklemelisiniz"
+
+#: it_purchase_project/it_purchase_app/forms.py:47
+msgid "please support comment"
+msgstr "Destek Takiminin Yorumu"
+
+#: it_purchase_project/it_purchase_app/forms.py:77
+msgid "Purchase team comment"
+msgstr "Satin Alma Takiminin Yorumu"
+
+#: it_purchase_project/it_purchase_app/forms.py:112
+msgid ""
+"Either you can fill both 'Currency' and 'Price Quoted' fields or omit both "
+"of them."
+msgstr ""
+
+#: it_purchase_project/it_purchase_app/models.py:37
+#, fuzzy
+#| msgid "Purchase1"
+msgid "purchase"
+msgstr "Satin Alma"
+
+#: it_purchase_project/it_purchase_app/models.py:38
+#, fuzzy
+#| msgid "Purchase1"
+msgid "purchases"
+msgstr "Satin Alma"
+
+#: it_purchase_project/settings.py:149
+msgid "Turkish"
+msgstr "Turkce"
+
+#: it_purchase_project/settings.py:150
+msgid "English"
+msgstr "Ingilizce"
+
+#: admin/templates/material/fields/django_admintimewidget.html:21
+msgid "Now"
+msgstr "Simdi"
+
+#: frontend/apps.py:141
+msgid "Frontend"
+msgstr ""
+
+#: frontend/models.py:25
+msgid "label"
+msgstr "Etiket"
+
+#: frontend/models.py:26
+msgid "installed"
+msgstr "installiert"
+
+#: frontend/models.py:31
+msgid "module"
+msgstr "Modul"
+
+#: frontend/models.py:32
+msgid "modules"
+msgstr "Moduller"
+
+#: frontend/templates/400.html:4 frontend/templates/400.html.py:6
+msgid "Bad Request"
+msgstr "Ungültige Anforderung"
+
+#: frontend/templates/403.html:4 frontend/templates/403.html.py:10
+msgid "Access Forbidden"
+msgstr "Zugriff verboten"
+
+#: frontend/templates/403.html:14
+msgid "You are not logged in"
+msgstr "Du bist nicht eingeloggt"
+
+#: frontend/templates/403.html:16
+#, python-format
+msgid "%(user)s have no rights to access to the page"
+msgstr "%(user)s haben keine Rechte für den Zugriff auf die Seite"
+
+#: frontend/templates/404.html:4 frontend/templates/404.html.py:6
+msgid "Page not found"
+msgstr "Seite nicht gefunden"
+
+#: frontend/templates/404.html:11
+msgid "We're sorry, but the requested page could not be found."
+msgstr "Es tut uns leid, aber die angeforderte Seite konnte nicht gefunden werden."
+
+#: frontend/templates/500.html:4 frontend/templates/500.html.py:10
+msgid "Server error"
+msgstr "Serverfehler"
+
+#: frontend/templates/material/frontend/base_site.html:4
+#: frontend/templates/material/frontend/base_site.html:5
+msgid "Django Material"
+msgstr ""
+
+#: frontend/templates/material/frontend/views/confirm_delete.html:16
+#, python-format
+msgid "Are you sure you want to delete the %(object)s and related items?"
+msgstr "Sind Sie sicher, dass Sie die %(object)s und verwandte Artikel löschen möchten?"
+
+#: frontend/views/create.py:37
+#, python-brace-format
+msgid "The {name} \"{link}\" was added successfully."
+msgstr "Der {name} \"{link}\" wurde erfolgreich hinzugefügt."
+
+#: frontend/views/delete.py:87
+#, python-brace-format
+msgid "The {name} \"{link}\"  was deleted successfully."
+msgstr "Der {name} \"{link}\" wurde erfolgreich gelöscht."
+
+#: frontend/views/update.py:38
+#, python-brace-format
+msgid "The {name} \"{link}\" was changed successfully."
+msgstr "Der {name} \"{link}\" wurde erfolgreich geändert."
+
+#: templates/material/fields/django_fileinput.html:8
+msgid "File"
+msgstr "Datei"
+
+#: templates/material/fields/django_selectmultiple.html:7
+msgid "Choose your option"
+msgstr "Wählen Sie Ihre Option"
+
+# action
+msgid "Delete selected objects"
+msgstr "Ausgewählte Objekte löschen"

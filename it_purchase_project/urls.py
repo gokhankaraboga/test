@@ -42,7 +42,7 @@ from material.frontend import urls as frontend_urls  # NOQA
 urlpatterns = [
     url(r'^login/$', auth.login, name='login'),
     url(r'^logout/$', auth.logout, name='logout'),
-    url(r'^$', generic.RedirectView.as_view(url='/workflow/', permanent=False)),
+    #url(r'^$', generic.RedirectView.as_view(url='/workflow/', permanent=False)),
     url(r'', include(frontend_urls)),
     re_path('i18n/', include('django.conf.urls.i18n')),
     #url(r'^', include('it_purchase_project.profile.urls')),

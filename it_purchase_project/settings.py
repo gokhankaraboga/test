@@ -140,10 +140,11 @@ USE_TZ = True
 
 AUTH_USER_MODEL = 'profile.Profile'
 
-LOGIN_REDIRECT_URL = '/workflow'
+LOGIN_REDIRECT_URL = '/'
 
 LOGOUT_REDIRECT_URL = 'login'
 
+LANGUAGE_REDIRECT_URL = '/workflow'
 
 LANGUAGES = [
     ('tr', _('Turkish')),

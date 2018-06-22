@@ -1,0 +1,43 @@
+{% extends "material/frontend/base.html" %}
+{% load i18n %}
+{% load static %}
+
+{#{% block js %}#}
+{#    {{ block.super }}#}
+{#    <script>#}
+{#                console.log('ben geldim');#}
+{##}
+{#        $(document).ready(function () {#}
+{#            $(".dropdown-trigger").dropdown({hover: true});#}
+{#        });#}
+{#    </script>#}
+{#{% endblock %}#}
+
+{% block topbar_links %}
+    {% if user.is_authenticated %}
+        <li><a data-turbolinks="false"></a>
+            <div class="input-field col s12 m6">
+                <form action="{% url 'set_language' %}" method="post">
+                    {% csrf_token %}
+                    <select name="language" class="icons"
+                            onchange="this.form.submit()">
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% get_available_languages as LANGUAGES %}
+                        {% get_language_info_list for LANGUAGES as languages %}
+                        {% for language in languages %}
+                            <option value="{{ language.code }}"
+                                    {% with  "flags/1x1/"|add:language.code|add:".svg" as image_url %}
+                                    data-icon={% static image_url %}>
+                                            {{ language.name_local }}
+                                        </option>
+                                    {% endwith %}
+                        {% endfor %}
+                    </select>
+                    <label style="font-size: medium; color: #fff">
+                        {{ LANGUAGE_CODE | language_name_local }}  </label>
+                </form>
+            </div>
+        </li>
+    {% endif %}
+    {{ block.super }}
+{% endblock %}

@@ -1,10 +1,7 @@
+from django import forms
 from django.views import generic
 from material import Layout, Row, Fieldset
 from viewflow.flow.views import StartFlowMixin, FlowMixin
-from django import forms
-from viewflow.nodes.view import Start
-from .models import PurchaseProcess, PurchaseTask
-from viewflow.flow.views import CancelProcessView
 
 from .forms import PurchaseForm, SupportForm, NecessaryPriceQuoteForm, \
     GetPriceQuoteForm, SuperiorApprovalForm, ProceedPurchaseForm

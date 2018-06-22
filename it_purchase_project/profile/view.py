@@ -1,4 +1,3 @@
-
 from django.contrib.auth import authenticate, login
 
 
@@ -14,6 +13,7 @@ def login(request):
         else:
             # Return an 'invalid login' error message.
             ...
+
 
 def logout(request):
     pass
